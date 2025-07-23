@@ -16,7 +16,7 @@ async def main():
             base_url=os.getenv("GLPI_API_URL")
     ) as glpi:
         # glpiID = await glpi.users.get_my_id()
-        tickets = await glpi.categories.list()
+        tickets = await glpi.categories.list_sorted_by_name()
         print(tickets)
 
 if __name__ == '__main__':

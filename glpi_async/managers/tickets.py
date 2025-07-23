@@ -91,3 +91,23 @@ class TicketManager(BaseManager):
             await self.cache.set(cache_key, result, ttl=300)
         return result
 
+    async def list_open_tickets_with_assignees(self):
+        # Берём открытые заявки со статусом "2" (открыто) и подтягиваем ответственного (field 22)
+        return await self.api.get(
+            f"search/{self.item_name}",
+            params={
+                "uid_cols": True,
+                "criteria[0][field]": "12",        # поле статуса
+                "criteria[0][searchtype]": "equals",
+                "criteria[0][value]": "2",         # статус 2 = открыт
+                "forcedisplay[0]": "1",            # id заявки
+                "forcedisplay[1]": "21",           # имя заявки
+                "forcedisplay[2]": "22",           # id ответственного
+                "forcedisplay[3]": "151",          # имя ответственного (предположим)
+                "sort": '1',                         # номер поля в "forcedisplay", по которому сортируем
+                "order": "DESC",                    # сортировка по возрастанию
+                "sortfield": "1",                 # поле "Ticket.id"
+                "range": "0-50"
+            }
+        )
+
