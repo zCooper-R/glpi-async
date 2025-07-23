@@ -29,11 +29,10 @@ class QueryBuilder:
         return self.where(22, user_id)
 
     def created_after(self, dt: datetime):
-        print(dt.isoformat(timespec="minutes"))
-        return self.where(15, dt.isoformat(timespec="minutes"), "morethan")
+        return self.where(15, dt.strftime("%Y-%m-%d"), "morethan")
 
     def created_before(self, dt: datetime):
-        return self.where(15, dt.strftime("%Y-%m-%d %H:%M:%S"), "lessthan")
+        return self.where(15, dt.strftime("%Y-%m-%d"), "lessthan")
 
     async def get(self):
         params = self.criteria.build()
@@ -41,4 +40,5 @@ class QueryBuilder:
             params["uid_cols"] = True
         for i, val in enumerate(self.display):
             params[f"forcedisplay[{i}]"] = val
+        print(params)
         return await self.manager.api.get(f"search/{self.manager.item_name}", params=params)
