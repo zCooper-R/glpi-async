@@ -11,3 +11,12 @@ class CategoryManager(BaseManager):
     async def get_name(self, category_id: int) -> str:
         category = await self.api.get(f"{self.item_name}/{category_id}")
         return category["name"]
+
+    async def list_sorted_by_name(self):
+        params = {
+            "uid_cols": True,
+            "order": "ASC",
+
+        }
+        result = await self.api.get(f"/search/{self.item_name}", params=params)
+        return result["data"]
