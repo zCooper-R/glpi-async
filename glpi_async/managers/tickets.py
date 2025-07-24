@@ -111,3 +111,19 @@ class TicketManager(BaseManager):
             }
         )
 
+    async def list_closed_for_user(
+        self, user_id: int, after: datetime | None = None, before: datetime | None = None
+    ):
+        q = self.query().close().for_user(user_id)
+        if after:
+            q = q.created_after(after)
+        if before:
+            q = q.created_before(before)
+        return await q.range(1, 2000).get()
+
+    async def list_by_category_for_user(self, user_id: int, category_id: int):
+        return await self.query().for_user(user_id).where("7", category_id).get()
+
+    async def list_closed_at_midnight(self, user_id: int):
+        tickets = await self.query().close().for_user(user_id).show("12", "15", "16").range(1, 2000).get()
+        return [t for t in tickets.get('data') if t.get("Ticket.date", "").endswith("23:59:00")]

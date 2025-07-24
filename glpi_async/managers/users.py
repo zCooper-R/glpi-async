@@ -5,6 +5,9 @@ class UserManager(BaseManager):
     def __init__(self, api):
         super().__init__(api, 'User')
 
+    async def list(self, params=None):
+        return await self.api.get(f"{self.item_name}", params=params)
+
     async def get_my_id(self) -> int:
         r = await self.api.get("getFullSession/")
         return r.get('session').get('glpiID')
