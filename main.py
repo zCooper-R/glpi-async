@@ -43,7 +43,7 @@ async def weekly_summary():
             f"✅ <b>Закрыто:</b> {closed.get('totalcount', 0)} заявок\n"
             f"🚨 <b>Открыто:</b> {opened.get('totalcount', 0)} новых\n"
             f"👤 <b>Самый активный техник:</b> {top_technician}\n"
-            f"📋 <b>Рейтинг техников:</b>\n{tech_stats}"
+            f"📋 <b>Рейтинг техников:</b>\n{tech_stats}1"
         )
 
         return text
